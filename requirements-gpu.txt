@@ -1,0 +1,17 @@
+# Core FaceFusion Dependencies
+gradio-rangeslider==0.0.8
+gradio==5.25.2
+numpy==2.3.2
+onnx==1.17.0
+opencv-python==4.11.0.86
+psutil==7.0.0
+tqdm==4.67.1
+scipy==1.15.2
+
+# GPU Support (Penting!)
+# Kita hanya menyertakan versi GPU untuk menghindari konflik
+onnxruntime-gpu==1.22.0
+
+# API Server Dependencies
+fastapi
+uvicorn[standard]
