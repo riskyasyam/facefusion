@@ -59,3 +59,9 @@ Documentation
 -------------
 
 Read the [documentation](https://docs.facefusion.io) for a deep dive.
+
+
+Documentation API
+-----------------
+
+Read the [API Documentation](DOKUMENTASI.md) for a deep dive on how to use the API endpoint.

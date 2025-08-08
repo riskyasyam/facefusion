@@ -1,6 +1,29 @@
 # Dokumentasi API FaceFusion
 Berikut adalah panduan lengkap untuk menggunakan endpoint /swap/ beserta semua parameter dan nilai yang tersedia.
 
+## Instalasi & Persiapan Awal
+Sebelum menggunakan API, pastikan Anda telah mengikuti semua langkah instalasi dari Panduan Instalasi Resmi FaceFusion.
+
+Untuk memastikan semua fitur dan prosesor dapat berjalan dengan baik, terutama dengan akselerasi GPU, ikuti langkah-langkah di bawah ini setelah instalasi dasar selesai.
+
+### 1. Instal Dependensi
+Jalankan perintah berikut untuk menginstal semua library Python yang dibutuhkan dari file requirements-gpu.txt (jika Anda menggunakan GPU) atau requirements.txt.
+````python
+# Untuk pengguna GPU (direkomendasikan)
+pip install -r requirements-gpu.txt
+
+# Untuk pengguna CPU
+pip install -r requirements.txt
+````
+### 2. Unduh Semua Model AI
+Untuk dapat menggunakan seluruh fitur atau prosesor tanpa gangguan saat API berjalan, sangat disarankan untuk mengunduh semua model AI terlebih dahulu.
+
+    Peringatan: Proses ini akan mengunduh data dalam jumlah sangat besar (bisa mencapai puluhan Gigabyte) dan memakan waktu sangat lama. Pastikan Anda menggunakan koneksi internet yang stabil.
+````python
+python facefusion.py force-download
+````
+Setelah langkah-langkah ini selesai, Anda siap untuk menjalankan dan menggunakan API.
+
 ## Endpoint Utama
 ``POST /swap/``
 Endpoint ini adalah inti dari API. Ia menerima file gambar/video dan serangkaian parameter opsional untuk melakukan berbagai jenis manipulasi wajah dan video.
