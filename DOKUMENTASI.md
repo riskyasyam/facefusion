@@ -17,8 +17,7 @@ pip install -r requirements.txt
 ````
 ### 2. Unduh Semua Model AI
 Untuk dapat menggunakan seluruh fitur atau prosesor tanpa gangguan saat API berjalan, sangat disarankan untuk mengunduh semua model AI terlebih dahulu.
-
-    Peringatan: Proses ini akan mengunduh data dalam jumlah sangat besar (bisa mencapai puluhan Gigabyte) dan memakan waktu sangat lama. Pastikan Anda menggunakan koneksi internet yang stabil.
+*Peringatan: Proses ini akan mengunduh data dalam jumlah sangat besar (bisa mencapai puluhan Gigabyte) dan memakan waktu sangat lama. Pastikan Anda menggunakan koneksi internet yang stabil*
 ````python
 python facefusion.py force-download
 ````
