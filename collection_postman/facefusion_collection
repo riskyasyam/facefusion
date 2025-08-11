@@ -22,12 +22,26 @@
 						{
 							"key": "target_file",
 							"type": "file",
-							"src": "/C:/Users/Asyam/Downloads/asyam.mp4"
+							"src": "/C:/Users/Asyam/Downloads/tes video 2 orang.mp4"
+						},
+						{
+							"key": "audio_file",
+							"type": "file",
+							"src": "/C:/Users/Asyam/Downloads/5 Easy Ways to Improve Your Speaking in 30 Seconds. (Ep. 7) [KrcDbmZL1cs].mp3"
 						},
 						{
 							"key": "processors",
-							"value": "face_swapper,face_enhancer,age_modifier,expression_restorer,face_debugger",
-							"description": "Face Swapper\\\\Fitur utama untuk swap foto\nFace Enhancer\\\\ Memperjelas Foto pada Muka\nAge Modifier\\\\ Mengubah umur pada wajah\nExpression Restorer \\\\ Mengganti wajah sesuai muka video target\nFace Debugger \\\\ Mengetahui debug dari process",
+							"value": "face_swapper,lip_syncer,face_enhancer,age_modifier,expression_restorer,face_debugger",
+							"type": "text"
+						},
+						{
+							"key": "face_swapper_model",
+							"value": "inswapper_128_fp16",
+							"type": "text"
+						},
+						{
+							"key": "face_swappper_pixel_boost",
+							"value": "256x256",
 							"type": "text"
 						},
 						{
@@ -53,6 +67,91 @@
 						{
 							"key": "face_editor_mouth_smile",
 							"value": "1.0",
+							"type": "text"
+						},
+						{
+							"key": "lip_syncer_model",
+							"value": "wav2lip_gan_96",
+							"type": "text"
+						},
+						{
+							"key": "face_selector_mode",
+							"value": "reference",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "reference_face_file",
+							"type": "file",
+							"src": "/C:/Users/Asyam/Downloads/muka zarif.jpg",
+							"disabled": true
+						},
+						{
+							"key": "face_mask_types",
+							"value": "occlusion",
+							"type": "text"
+						},
+						{
+							"key": "face_mask_padding",
+							"value": "10,20,10,20",
+							"type": "text"
+						},
+						{
+							"key": "output_video_encoder",
+							"value": "h264_nvenc",
+							"type": "text"
+						},
+						{
+							"key": "output_video_quality",
+							"value": "90",
+							"type": "text"
+						},
+						{
+							"key": "output_video_resolution",
+							"value": "1920x1080",
+							"type": "text"
+						},
+						{
+							"key": "output_video_fps",
+							"value": "60",
+							"type": "text"
+						},
+						{
+							"key": "face_detector_model",
+							"value": "scrfd",
+							"type": "text"
+						},
+						{
+							"key": "face_detector_score",
+							"value": "0.7",
+							"type": "text"
+						},
+						{
+							"key": "face_selector_order",
+							"value": "left-right",
+							"type": "text"
+						},
+						{
+							"key": "face_selector_gender",
+							"value": "male",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "face_selector_age_start",
+							"value": "19",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "face_selector_age_end",
+							"value": "40",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "output_video_preset",
+							"value": "ultrafast",
 							"type": "text"
 						}
 					]
