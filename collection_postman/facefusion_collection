@@ -1,0 +1,79 @@
+{
+	"info": {
+		"_postman_id": "6cca2126-fabb-43da-95b2-bfeacb5ec070",
+		"name": "Face Fusion API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30815068"
+	},
+	"item": [
+		{
+			"name": "Post API Swap",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "source_file",
+							"type": "file",
+							"src": "/C:/Users/Asyam/Downloads/udin.jpeg"
+						},
+						{
+							"key": "target_file",
+							"type": "file",
+							"src": "/C:/Users/Asyam/Downloads/asyam.mp4"
+						},
+						{
+							"key": "processors",
+							"value": "face_swapper,face_enhancer,age_modifier,expression_restorer,face_debugger",
+							"description": "Face Swapper\\\\Fitur utama untuk swap foto\nFace Enhancer\\\\ Memperjelas Foto pada Muka\nAge Modifier\\\\ Mengubah umur pada wajah\nExpression Restorer \\\\ Mengganti wajah sesuai muka video target\nFace Debugger \\\\ Mengetahui debug dari process",
+							"type": "text"
+						},
+						{
+							"key": "face_enhancer_model",
+							"value": "gfpgan_1.4",
+							"type": "text"
+						},
+						{
+							"key": "age_modifier_direction",
+							"value": "70",
+							"type": "text"
+						},
+						{
+							"key": "expression_restorer_factor\t",
+							"value": "50",
+							"type": "text"
+						},
+						{
+							"key": "face_debugger_items",
+							"value": "bounding-box,face-landmark-68",
+							"type": "text"
+						},
+						{
+							"key": "face_editor_mouth_smile",
+							"value": "1.0",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://0.0.0.0:8000/swap/",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "8000",
+					"path": [
+						"swap",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
