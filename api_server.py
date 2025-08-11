@@ -44,7 +44,25 @@ def run_facefusion_process(
     lip_syncer_model: str | None,
     lip_syncer_weight: float | None,
     deep_swapper_model: str | None,
-    deep_swapper_morph: int | None
+    deep_swapper_morph: int | None,
+    face_selector_mode: str | None = None,
+    reference_face_distance: float | None = None,
+    face_mask_types: str | None = None,
+    face_mask_blur: float | None = None,
+    face_mask_padding: str | None = None,
+    output_video_encoder: str | None = None,
+    output_video_quality: int | None = None,
+    output_video_resolution: str | None = None,
+    output_video_fps: float | None = None,
+    face_swapper_model: str | None = None,
+    face_swapper_pixel_boost : str | None = None,
+    face_detector_model: str | None = None,
+    face_detector_score: float | None = None,
+    face_selector_order: str | None = None,
+    face_selector_gender: str | None = None,
+    face_selector_age_start: int | None = None,
+    face_selector_age_end: int | None = None,
+    output_video_preset: str | None = None
 ):
     global is_processing
     try:
@@ -96,6 +114,46 @@ def run_facefusion_process(
             command.extend(['--lip-syncer-model', lip_syncer_model, '--lip-syncer-weight', str(lip_syncer_weight)])
         if 'deep_swapper' in processor_list and deep_swapper_model:
             command.extend(['--deep-swapper-model', deep_swapper_model, '--deep-swapper-morph', str(deep_swapper_morph)])
+        if face_selector_mode:
+            command.extend(['--face-selector-mode', face_selector_mode])
+            if face_selector_mode == 'reference':
+                command.extend(['--reference-face-distance', str(reference_face_distance)])
+        if face_mask_types:
+            command.extend(['--face-parser-model', 'bisenet_resnet_18'])
+            mask_types_list = [item.strip() for item in face_mask_types.split(',')]
+            command.extend(['--face-mask-types', *mask_types_list])
+            if face_mask_blur is not None:
+                command.extend(['--face-mask-blur', str(face_mask_blur)])
+            if face_mask_padding is not None:
+                padding_list = [item.strip() for item in face_mask_padding.split(',')]
+                command.extend(['--face-mask-padding', *padding_list])
+        if output_video_encoder:
+            command.extend(['--output-video-encoder', output_video_encoder])
+        if output_video_quality is not None:
+            command.extend(['--output-video-quality', str(output_video_quality)])
+        if output_video_resolution:
+            command.extend(['--output-video-resolution', output_video_resolution])
+        if output_video_fps is not None:
+            command.extend(['--output-video-fps', str(output_video_fps)])
+        if 'face_swapper' in processor_list:
+            if face_swapper_model:
+                command.extend(['--face-swapper-model', face_swapper_model])
+            if face_swapper_pixel_boost is not None:
+                command.extend(['--face-swapper-pixel-boost', str(face_swapper_pixel_boost)])
+        if face_detector_model:
+            command.extend(['--face-detector-model', face_detector_model])
+        if face_detector_score is not None:
+            command.extend(['--face-detector-score', str(face_detector_score)])
+        if face_selector_order:
+            command.extend(['--face-selector-order', face_selector_order])
+        if face_selector_gender:
+            command.extend(['--face-selector-gender', face_selector_gender])
+        if face_selector_age_start is not None:
+            command.extend(['--face-selector-age-start', str(face_selector_age_start)])
+        if face_selector_age_end is not None:
+            command.extend(['--face-selector-age-end', str(face_selector_age_end)])
+        if output_video_preset:
+            command.extend(['--output-video-preset', output_video_preset])
 
         print(f"Menjalankan perintah: {' '.join(command)}")
         
@@ -118,7 +176,7 @@ def create_swap(
     audio_file: UploadFile = File(None),
     processors: str = Form("face_swapper"),
     face_enhancer_model: str = Form(None),
-    face_enhancer_blend: int = Form(80),
+    face_enhancer_blend: int = Form(50),
     frame_enhancer_model: str = Form(None),
     frame_enhancer_blend: int = Form(80),
     age_modifier_direction: int = Form(None),
@@ -144,8 +202,27 @@ def create_swap(
     lip_syncer_model: str = Form(None),
     lip_syncer_weight: float = Form(1.0),
     deep_swapper_model: str = Form(None),
-    deep_swapper_morph: int = Form(80)
+    deep_swapper_morph: int = Form(80),
+    face_selector_mode: str = Form(None),
+    reference_face_distance: float = Form(0.3),
+    face_mask_types: str = Form(None),
+    face_mask_blur: float = Form(0.3),
+    face_mask_padding: str = Form(None),
+    output_video_encoder: str = Form("libx264"),
+    output_video_quality: int = Form(80),
+    output_video_resolution: str = Form(None),
+    output_video_fps: float = Form(None),
+    face_swapper_model: str = Form(None),
+    face_swapper_pixel_boost: str = Form(None),
+    face_detector_model: str = Form(None),
+    face_detector_score: float = Form(None),
+    face_selector_order: str = Form(None),
+    face_selector_gender: str = Form(None),
+    face_selector_age_start: int = Form(None),
+    face_selector_age_end: int = Form(None),
+    output_video_preset: str = Form('medium')
 ):
+    
     global is_processing
     if is_processing:
         raise HTTPException(status_code=429, detail="Server sedang memproses permintaan lain.")
@@ -195,7 +272,15 @@ def create_swap(
             face_editor_mouth_position_vertical, face_editor_head_pitch, face_editor_head_yaw, face_editor_head_roll,
             frame_colorizer_model, frame_colorizer_blend,
             lip_syncer_model, lip_syncer_weight,
-            deep_swapper_model, deep_swapper_morph
+            deep_swapper_model, deep_swapper_morph,
+            face_selector_mode, reference_face_distance,
+            face_mask_types, face_mask_blur, face_mask_padding,
+            output_video_encoder, output_video_quality,
+            output_video_resolution, output_video_fps,
+            face_swapper_model, face_swapper_pixel_boost,
+            face_detector_model, face_detector_score,
+            face_selector_order, face_selector_gender, face_selector_age_start, face_selector_age_end,
+            output_video_preset
         )
 
         if not os.path.exists(output_path):
