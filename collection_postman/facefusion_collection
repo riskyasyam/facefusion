@@ -16,72 +16,126 @@
 					"formdata": [
 						{
 							"key": "source_file",
+							"description": "file foto muka referensi yang ingin diubah ke muka anda",
 							"type": "file",
-							"src": "/C:/Users/Asyam/Downloads/udin.jpeg"
+							"src": "/C:/Users/Asyam/Documents/asset_post/udin.jpeg"
 						},
 						{
 							"key": "target_file",
+							"description": "file foto muka anda atau orang yang ingin diubah muka nya",
 							"type": "file",
-							"src": "/C:/Users/Asyam/Downloads/tes video 2 orang.mp4"
+							"src": "/C:/Users/Asyam/Documents/asset_post/tes video 2 orang.mp4"
 						},
 						{
 							"key": "audio_file",
+							"description": "audio jika ingin mengubah suara dengan file audio yang diinginkan (mp3)",
 							"type": "file",
 							"src": "/C:/Users/Asyam/Downloads/5 Easy Ways to Improve Your Speaking in 30 Seconds. (Ep. 7) [KrcDbmZL1cs].mp3"
 						},
 						{
 							"key": "processors",
-							"value": "face_swapper,lip_syncer,face_enhancer,age_modifier,expression_restorer,face_debugger",
+							"value": "face_swapper,face_enhancer,lip_syncer,frame_enhancer,age_modifier,expression_restorer,face_debugger",
+							"description": "processor atau fitur utama, pilihan value : face_swapper, deep_swapper, face_enhancer, frame_enhancer, lip_syncer, age_modifier, expression_restorer, face_editor, face_debugger, frame_colorizer",
 							"type": "text"
 						},
 						{
 							"key": "face_swapper_model",
 							"value": "inswapper_128_fp16",
+							"description": "untuk menukar wajah target dengan source, pilihan model : inswapper_128_fp16, simswap_256, uniface_256",
 							"type": "text"
+						},
+						{
+							"key": "deep_swapper_model",
+							"value": "druuzil/henry_cavill_448",
+							"description": "menukar wajah target dengan wajah artis, pilihan bisa dilihat di dokumentasi facefusion",
+							"type": "text",
+							"disabled": true
 						},
 						{
 							"key": "face_swappper_pixel_boost",
 							"value": "256x256",
-							"type": "text"
+							"description": "(Opsional) Mencoba meningkatkan detail pada wajah yang ditukar. Contoh: 256x256, 512x512.",
+							"type": "text",
+							"disabled": true
 						},
 						{
 							"key": "face_enhancer_model",
 							"value": "gfpgan_1.4",
+							"description": "untuk mempertajam wajah, pilihan model : gfpgan_1.4, codeformer, gpen_bfr_512",
+							"type": "text"
+						},
+						{
+							"key": "frame_enhancer_model",
+							"value": "real_esrgan_x4",
+							"description": "mempertajam seluruh video, pilihan model : real_esrgan_x4, real_esrgan_x2, ultra_sharp_x4",
 							"type": "text"
 						},
 						{
 							"key": "age_modifier_direction",
 							"value": "70",
+							"description": "mengubah wajah dengan umur pilihan : 100 - (-100) . Semakin positif semakin tua, semakin negatif semakin muda",
 							"type": "text"
 						},
 						{
-							"key": "expression_restorer_factor\t",
+							"key": "expression_restorer_factor",
 							"value": "50",
+							"description": "Memperbaiki ekspresi wajah agar lebih alami. (0-100) Kekuatan efek perbaikan ekspresi. Default: 50.",
 							"type": "text"
 						},
 						{
 							"key": "face_debugger_items",
 							"value": "bounding-box,face-landmark-68",
+							"description": "Menampilkan info debug. Pilihan (dipisah koma): bounding-box, face-landmark-68, face-mask.",
 							"type": "text"
 						},
 						{
 							"key": "face_editor_mouth_smile",
 							"value": "1.0",
+							"description": "Mengatur senyum. Range: -1.0 (cemberut) hingga 1.0 (tersenyum lebar).",
 							"type": "text"
 						},
 						{
 							"key": "lip_syncer_model",
 							"value": "wav2lip_gan_96",
+							"description": "memilih model untuk sinkronisasi bibir. pilihan model : wav2lip_gan_96, edtalk_256",
 							"type": "text"
 						},
 						{
 							"key": "face_selector_mode",
-							"value": "reference",
+							"value": "one",
+							"description": "menentukan strategi utama untuk memilih wajah. pilihan : reference, one, many",
+							"type": "text"
+						},
+						{
+							"key": "face_selector_order",
+							"value": "left-right",
+							"description": "menentukan urutan pemilihan jika face_selector_mode adalah one atau many, pilihan value : left-right, right-left, top-bottom, bottom-top, small-large, large-small",
+							"type": "text"
+						},
+						{
+							"key": "face_selector_gender",
+							"value": "male",
+							"description": "memfilter wajah berdasarkan jenis kelamin yang terdeteksi. pilihan : female, male",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "face_selector_age_start",
+							"value": "19",
+							"description": "memfilter wajah berdasarkan umur wajah pada satu video ( start )",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "face_selector_age_end",
+							"value": "40",
+							"description": "memfilter wajah berdasarkan umur wajah pada satu video ( end )",
 							"type": "text",
 							"disabled": true
 						},
 						{
 							"key": "reference_face_file",
+							"description": "referensi muka selector jika pada video lebih dari 1 orang. bisa pilih referensi mukanya",
 							"type": "file",
 							"src": "/C:/Users/Asyam/Downloads/muka zarif.jpg",
 							"disabled": true
@@ -89,70 +143,63 @@
 						{
 							"key": "face_mask_types",
 							"value": "occlusion",
+							"description": "Menentukan tipe topeng yang digunakan. Nilai lama (skin, left-eye) sudah tidak berlaku. pilihan : occlusion, box",
 							"type": "text"
 						},
 						{
 							"key": "face_mask_padding",
 							"value": "10,20,10,20",
+							"description": "top, bottom, right, left",
 							"type": "text"
 						},
 						{
 							"key": "output_video_encoder",
 							"value": "h264_nvenc",
+							"description": "memilih encoder untuk video hasil. pilihan : libx254, h264_nvenc, hevc_nvenc",
+							"type": "text"
+						},
+						{
+							"key": "output_video_preset",
+							"value": "ultrafast",
+							"description": "mengatur keseimbangan antara kecepatan encoding dan ukuran file. pilihan : ultrafast, medium, slow, veryslow",
 							"type": "text"
 						},
 						{
 							"key": "output_video_quality",
 							"value": "90",
+							"description": "(0-100) Kualitas video. Semakin tinggi, semakin besar filenya. Default: 80.",
 							"type": "text"
 						},
 						{
 							"key": "output_video_resolution",
 							"value": "1920x1080",
+							"description": "Mengubah resolusi. Contoh: 1920x1080, 1280x720.\n\n",
 							"type": "text"
 						},
 						{
 							"key": "output_video_fps",
 							"value": "60",
+							"description": "Mengubah FPS. Contoh: 30, 60.",
 							"type": "text"
 						},
 						{
 							"key": "face_detector_model",
 							"value": "scrfd",
+							"description": "memilih model untuk mendeteksi wajah. pilihan : retinaface, scrfd",
 							"type": "text"
 						},
 						{
 							"key": "face_detector_score",
 							"value": "0.7",
+							"description": "(0.0 - 1.0) Sensitivitas deteksi. Nilai lebih tinggi lebih selektif. Default: 0.5.",
 							"type": "text"
 						},
 						{
-							"key": "face_selector_order",
-							"value": "left-right",
-							"type": "text"
-						},
-						{
-							"key": "face_selector_gender",
-							"value": "male",
+							"key": "face_mask_blur",
+							"value": "0.3",
+							"description": "(0.0 - 1.0) Mengatur kehalusan tepi topeng. Default: 0.3.",
 							"type": "text",
 							"disabled": true
-						},
-						{
-							"key": "face_selector_age_start",
-							"value": "19",
-							"type": "text",
-							"disabled": true
-						},
-						{
-							"key": "face_selector_age_end",
-							"value": "40",
-							"type": "text",
-							"disabled": true
-						},
-						{
-							"key": "output_video_preset",
-							"value": "ultrafast",
-							"type": "text"
 						}
 					]
 				},
