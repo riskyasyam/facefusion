@@ -10,6 +10,9 @@ from starlette.background import BackgroundTask
 
 app = FastAPI()
 
+from worker_router import router as worker_router
+app.include_router(worker_router)
+
 is_processing = False
 
 def run_facefusion_process(
@@ -305,4 +308,4 @@ def create_swap(
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("api_server:app", host="0.0.0.0", port=8000)
+    uvicorn.run("api_server:app", host="127.0.0.1", port=8081)
