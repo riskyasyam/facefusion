@@ -18,7 +18,7 @@ load_dotenv()
 S3_ENDPOINT   = os.getenv('S3_ENDPOINT', 'http://localhost:9000')
 S3_REGION     = os.getenv('S3_REGION', 'us-east-1')
 S3_ACCESS_KEY = os.getenv('S3_ACCESS_KEY', 'minioadmin')
-S3_SECRET_KEY = os.getenv('S3_SECRET_KEY', 'minioadmin')
+S3_SECRET_KEY = os.getenv('S3_SECRET_KEY', 'minioadmin123')  # Updated from .env
 INPUT_BUCKET  = os.getenv('S3_INPUT_BUCKET', 'facefusion-input')
 OUTPUT_BUCKET = os.getenv('S3_OUTPUT_BUCKET', 'facefusion-output')
 
@@ -127,11 +127,22 @@ def run_facefusion(
     result.check_returncode()
 
 def _callback(url: str, body: Dict[str, Any]):
+    """Send callback to NestJS"""
     try:
-        r = requests.post(url, json=body, headers={'X-Worker-Secret': WORKER_SHARED_SECRET}, timeout=15)
+        print(f"🔄 Sending callback to: {url}")
+        print(f"📝 Callback payload: {body}")
+        
+        r = requests.patch(  # ← PATCH bukan POST
+            url, 
+            json=body, 
+            headers={'X-Worker-Secret': WORKER_SHARED_SECRET}, 
+            timeout=15
+        )
         r.raise_for_status()
+        print(f"✅ Callback success: {url} -> {r.status_code}")
+        
     except Exception as e:
-        print(f"[callback error] {url} -> {e}")
+        print(f"❌ Callback error: {url} -> {e}")
 
 @router.post("/worker/facefusion")
 def start_facefusion_job(
@@ -176,13 +187,15 @@ def start_facefusion_job(
         output_path = os.path.join(tmpdir, f"output{out_ext}")
 
         # validasi & download
+        print(f"📥 Downloading assets from S3...")
         s3.head_object(Bucket=INPUT_BUCKET, Key=source_key)
         s3.head_object(Bucket=INPUT_BUCKET, Key=target_key)
         s3.download_file(INPUT_BUCKET, source_key, source_path)
         s3.download_file(INPUT_BUCKET, target_key, target_path)
+        print(f"✅ Assets downloaded successfully")
 
-        # jalankan
-        use_cuda = bool(options.get('useCuda', False))
+        # jalankan facefusion
+        print(f"🚀 Starting FaceFusion processing...")
         run_facefusion(
             [source_path], target_path, output_path,
             processors=processors,
@@ -195,17 +208,46 @@ def start_facefusion_job(
         if not os.path.exists(output_path):
             raise RuntimeError("facefusion finished but output file not found")
 
+        # upload hasil ke S3
         output_key = f"results/{job_id}/result{out_ext}"
+        print(f"📤 Uploading result to S3: {output_key}")
         s3.upload_file(
             output_path, OUTPUT_BUCKET, output_key,
             ExtraArgs={'ContentType': _content_type_for_ext(out_ext)}
         )
+        print(f"✅ Result uploaded successfully")
 
-        _callback(f"{NEST_BASE_URL}/jobs/facefusion/{job_id}/callback/done", {"output_key": output_key})
+        # ✅ CALLBACK SUCCESS dengan URL dan payload yang benar
+        callback_url = f"{NEST_BASE_URL}/jobs/{job_id}/callback"
+        callback_payload = {
+            "status": "SUCCEEDED",
+            "progressPct": 100,
+            "outputKey": output_key
+        }
+        _callback(callback_url, callback_payload)
+        
         return {"ok": True, "output_key": output_key}
 
     except Exception as e:
-        _callback(f"{NEST_BASE_URL}/jobs/facefusion/{job_id}/callback/failed", {"error": str(e)})
+        print(f"❌ Job {job_id} failed: {str(e)}")
+        
+        # ✅ CALLBACK ERROR dengan URL dan payload yang benar
+        callback_url = f"{NEST_BASE_URL}/jobs/{job_id}/callback"
+        callback_payload = {
+            "status": "FAILED",
+            "progressPct": 0,
+            "errorMessage": str(e)
+        }
+        _callback(callback_url, callback_payload)
+        
         raise HTTPException(status_code=500, detail=str(e)) from e
+        
     finally:
+        # cleanup
         shutil.rmtree(tmpdir, ignore_errors=True)
+        print(f"🧹 Cleanup completed for job {job_id}")
+
+# Endpoint diagnostics (optional)
+@router.get("/worker/diagnostics")
+def get_diagnostics():
+    return _diagnostics()

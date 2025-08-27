@@ -174,10 +174,13 @@ def run_facefusion_process(
 
 @app.post("/swap/")
 def create_swap(
+    # Kebutuhan untuk upload file
     source_file: UploadFile = File(...),
     target_file: UploadFile = File(...),
     audio_file: UploadFile = File(None),
+    # Pilihan fitur atau processor nya
     processors: str = Form("face_swapper"),
+    #Processors
     face_enhancer_model: str = Form(None),
     face_enhancer_blend: int = Form(50),
     frame_enhancer_model: str = Form(None),
@@ -206,6 +209,7 @@ def create_swap(
     lip_syncer_weight: float = Form(1.0),
     deep_swapper_model: str = Form(None),
     deep_swapper_morph: int = Form(80),
+    # Parameter tambahan atau opsional (Bukan Processor)
     face_selector_mode: str = Form(None),
     reference_face_distance: float = Form(0.3),
     face_mask_types: str = Form(None),
